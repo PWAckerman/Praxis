@@ -1,0 +1,16 @@
+﻿{
+  "ros": [
+    {
+      "name": "Default Research",
+      "icon": "GOLD",
+      "description": "This is cool.",
+      "action": "1 + 1"
+    },
+	{
+      "name": "Default Research",
+      "icon": "GOLD",
+      "description": "This is cool.",
+      "action": "1 + 1"
+    }
+  ]
+}
