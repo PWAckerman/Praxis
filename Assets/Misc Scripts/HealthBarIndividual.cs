@@ -12,8 +12,8 @@ public class HealthBarIndividual {
 	public GameObject go = new GameObject();
 	public SpriteRenderer renderer;
 	public Transform transform;
-	public Sprite offTex = Object.Instantiate(AssetDatabase.LoadAssetAtPath<Sprite>("Assets/EnergyBarEmpty.png")) as Sprite;
-	public Sprite onTex	= Object.Instantiate(AssetDatabase.LoadAssetAtPath<Sprite>("Assets/EnergyBarFilled.png")) as Sprite;
+	public Sprite offTex = Object.Instantiate(AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/EnergyBarEmpty.png")) as Sprite;
+	public Sprite onTex	= Object.Instantiate(AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/EnergyBarFilled.png")) as Sprite;
 	public Sprite offSprite;
 	public Sprite onSprite;
 

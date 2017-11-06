@@ -25,6 +25,7 @@ public class Projectil1 : MonoBehaviour, IProjectile{
 		timeToLive = 3f;
 		sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/Projectiles/Projectile1.png").OfType<Sprite>().ToArray();
 		this.gameObject.layer = 8;
+		this.gameObject.tag = "Projectile1";
 		renderer = GetComponent<SpriteRenderer> () as SpriteRenderer;
 		rb = GetComponent<Rigidbody2D> () as Rigidbody2D;
 		collider = GetComponent<CircleCollider2D> () as CircleCollider2D;
@@ -45,16 +46,16 @@ public class Projectil1 : MonoBehaviour, IProjectile{
 	}
 
 	public void Update(){
-		bool wall = Physics2D.OverlapCircle (transform.position, 2f, 10);
-		bool floor = Physics2D.OverlapCircle (transform.position, 2f, 13);
-		bool platform = Physics2D.OverlapCircle (transform.position, 2f, 12);
-		Debug.Log ("PROJECTILE COLLISION?");
-		Debug.Log (wall);
-		Debug.Log (floor);
-		Debug.Log (platform);
-		if (wall || floor || platform) {
-			Destroy(this.gameObject);
-		}
+//		bool wall = Physics2D.OverlapCircle (transform.position, 0.5f, 10);
+//		bool floor = Physics2D.OverlapCircle (transform.position, 0.5f, 13);
+//		bool platform = Physics2D.OverlapCircle (transform.position, 0.5f, 12);
+//		Debug.Log ("PROJECTILE COLLISION?");
+//		Debug.Log (wall);
+//		Debug.Log (floor);
+//		Debug.Log (platform);
+//		if (wall || floor || platform) {
+//			Destroy(this.gameObject);
+//		}
 	}
 
 	public void Fire(bool direction, int level, int angle){
@@ -72,6 +73,9 @@ public class Projectil1 : MonoBehaviour, IProjectile{
 
 	public void OnCollisionEnter2D(Collision2D collision){
 		Debug.Log ("COLLISION");
+		if (collision.gameObject.tag == "Drone") {
+			collision.gameObject.GetComponent<DroneController> ().Damage (1);
+		}
 		Destroy (this.gameObject);
 	}
 
