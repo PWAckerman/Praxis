@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEngine;
-using UnityEditor;
+ 
 
 [Serializable]
 public class ResearchObjectRepresentation{

@@ -13,6 +13,7 @@ public class BoundaryManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 		ManageBoundary ();
 	}
 
@@ -23,6 +24,7 @@ public class BoundaryManager : MonoBehaviour {
 		if(boundsMin.x < position.x && position.x < boundsMax.x &&
 			boundsMin.y < position.y && position.y < boundsMax.y){
 			boundary.SetActive (true);
+//			Time.timeScale = 0.0f;
 		} else {
 			boundary.SetActive (false);
 		}

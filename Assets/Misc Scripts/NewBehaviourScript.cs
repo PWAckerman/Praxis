@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+ 
 using System;
 using System.Timers;
 using System.Collections;

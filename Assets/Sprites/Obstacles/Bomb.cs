@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+ 
 using System.Collections;
 
 public class Bomb : MonoBehaviour {
@@ -16,7 +16,7 @@ public class Bomb : MonoBehaviour {
 	public Collider2D colliders;
 	// Use this for initialization
 	void Start () {
-		sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Obstacles/Bomb.png");
+		sprite = Resources.Load<Sprite>("Bomb.png");
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 		renderer = gameObject.AddComponent<SpriteRenderer> ();
 		rb = gameObject.AddComponent<Rigidbody2D> () as Rigidbody2D;

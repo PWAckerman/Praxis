@@ -19,7 +19,8 @@ public enum LootTypes
 	A,
 	B,
 	C,
-	D
+	D,
+	HEALTH
 };
 
 public class LootFactory {
@@ -32,6 +33,9 @@ public class LootFactory {
 
 	public static Loot GetRandomLoot(MonoBehaviour par, GameObject go){
 		LootTypes lootT = (LootTypes)typeof(LootTypes).GetRandomEnumValue ();
+		if (lootT == LootTypes.HEALTH) {
+			lootT = LootTypes.D;
+		}
 		GameObject go2 = new GameObject ();
 		Loot loot = go2.AddComponent<Loot>();
 		loot.Init (lootT, par);

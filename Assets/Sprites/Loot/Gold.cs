@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+ 
 using System.Collections;
 using System.Timers;
 using System.Linq;
@@ -11,6 +11,7 @@ public class Gold : MonoBehaviour {
 	float pullSpeedFactor = 0.1f; // Higher values make objects home in faster
 	private PlayerController player;
 	public Rigidbody2D rb;
+	public GameObject Collected;
 	public int radius = 10;
 	public Collider2D colliders;
 	public SpriteRenderer renderer;
@@ -27,7 +28,7 @@ public class Gold : MonoBehaviour {
 	}
 
 	public void Init(MonoBehaviour parent){
-		sprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Loot/Coin.png");
+		sprite = Resources.Load<Sprite>("Coin");
 		par = parent;
 	}
 
@@ -39,12 +40,15 @@ public class Gold : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 		renderer = gameObject.AddComponent<SpriteRenderer> ();
 		rb = gameObject.AddComponent<Rigidbody2D> () as Rigidbody2D;
+//		rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 		collider = gameObject.AddComponent<CircleCollider2D> () as CircleCollider2D;
 		collider.radius = sprite.bounds.size.x / 2;
+		Collected = Resources.Load<GameObject>("Collected");
 		transform = gameObject.GetComponent<Transform> ();
 		transform.position = new Vector3 (par.GetComponent<Transform>().position.x + (rndSelect * 0.2f), par.GetComponent<Transform>().position.y + 1, 1f);
 		transform.localScale = new Vector3 (8,8,1);
 		renderer.sprite = sprite;
+		renderer.sortingOrder = 6;
 		enabled = true;
 	}
 
@@ -69,6 +73,7 @@ public class Gold : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll){
 		if (coll.collider.gameObject.layer == 9) {
 			Debug.Log ("it was a player");
+			Destroy(Instantiate<GameObject>(Collected, transform.position, Quaternion.identity), 0.25f);
 			Destroy (this.gameObject);
 			player.CollectGold();
 		}

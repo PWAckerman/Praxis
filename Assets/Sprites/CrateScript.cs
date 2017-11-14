@@ -2,13 +2,16 @@
 using System.Collections;
 using System.Timers;
 
-public class CrateScript : MonoBehaviour, ILootable {
+public class CrateScript : MonoBehaviour, ILootable, IBurnable {
 	public Loot[] loot;
 	public int dropRate;
-	AudioSource snd;
+	public GameObject dust;
+	public GameObject bigFire;
+	bool burning = false;
+	AudioManager am;
 	// Use this for initialization
 	void Start () {
-		snd = GetComponent<AudioSource> ();
+		am = GameObject.FindGameObjectWithTag ("AudioManager").GetComponent<AudioManager> ();
 	}
 	
 	// Update is called once per frame
@@ -17,14 +20,27 @@ public class CrateScript : MonoBehaviour, ILootable {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll){
-		
 		if (coll.collider.gameObject.layer == 8) {
-			snd.Play ();
 			Debug.Log ("it was a projectile");
 			Destroy(coll.collider.gameObject);
-			Destroy (this.gameObject);
+			am.Play ("woodBreak");
 			Drop ();
+			Destroy (this.gameObject);
 		}
+	}
+
+	public void Burn(){
+		burning = true;
+		Instantiate (bigFire, transform.position, Quaternion.identity);
+		Destroy (this.gameObject, 3f);
+	}
+
+	public bool isBurning(){
+		return burning;
+	}
+
+	void OnDestroy(){
+		Instantiate (dust, transform.position, Quaternion.identity);
 	}
 
 	public void Drop(){

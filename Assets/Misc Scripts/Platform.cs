@@ -42,11 +42,9 @@ public class Platform : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (transform.position == startingPosition) {
-			Debug.Log ("LERP");
 			destination = endingPosition;
 			transform.position = Vector3.Lerp (startingPosition, destination, Time.deltaTime * speed);
 		} else if (transform.position == endingPosition) {
-			Debug.Log ("LERP2");
 			destination = startingPosition;
 			transform.position = Vector3.Lerp (endingPosition, destination, Time.deltaTime * speed);
 		} else {

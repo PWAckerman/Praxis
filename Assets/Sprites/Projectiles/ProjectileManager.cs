@@ -3,25 +3,28 @@ using System.Collections;
 
 public class ProjectileManager {
 	public enum Mode {
-		PROJECTILE1
+		PROJECTILE1,
+		ENEMY,
+		GRENADE,
+		CHAFF_GRENADE
 	}
 
 	Mode currentMode;
-	PlayerController parent;
 	ProjectileFactory factory;
 	// Use this for initialization
-	public ProjectileManager(PlayerController parent){
+	public ProjectileManager(){
 		currentMode = Mode.PROJECTILE1;
 		factory = GameObject.FindGameObjectWithTag ("ProjectileFactory").GetComponent<ProjectileFactory>();
-		this.parent = parent;
+
 	}
 
 	public void ChangeMode(Mode mode){
 		currentMode = mode;
 	}
 
-	public void Fire(bool direction, int level, int angle){
-		GameObject proj = factory.getProjectile(currentMode, parent);
-		proj.GetComponent<IProjectile>().Fire(direction, level, angle);
+	public void Fire(bool direction, int level, int angle, Vector3 origin, Mode mode){
+		GameObject proj = factory.getProjectile(mode, new Vector3(origin.x, origin.y, 0f));
+		Debug.Log ("DID GRENADE MAKE IT THIS FAR");
+		proj.GetComponent<IProjectile>().Fire(direction, angle, angle);
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+ 
 using System.Collections;
 using System.Timers;
 
@@ -8,9 +8,10 @@ public class Safe : MonoBehaviour, ILootable {
 	public int dropRate;
 	public Sprite open;
 	public AudioSource snd;
+	public GameObject dust;
 	public bool dropped = false;
 	void Start () {
-		open = Object.Instantiate(AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Sprites/Loot/SafeOpen.png")) as Sprite;
+		open = Resources.Load<Sprite>("SafeOpen");
 		snd = GetComponent<AudioSource> ();
 	}
 
@@ -23,18 +24,24 @@ public class Safe : MonoBehaviour, ILootable {
 		Vector2 normalizedVelocity = coll.otherRigidbody.velocity.normalized;
 		if (coll.collider.gameObject.layer == 10 && Mathf.Abs(normalizedVelocity.y) > 0.5 && !dropped) {
 			Debug.Log ("it was a safe");
-			this.gameObject.GetComponent<SpriteRenderer> ().sprite = open;
-			Drop ();
-			snd.Play ();
-			dropped = true;
+			Open ();
 		} else if(coll.collider.gameObject.layer == 9 && coll.relativeVelocity.y < -2 && !dropped){
 			PlayerController player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController>();
 			player.Damage ();
-			this.gameObject.GetComponent<SpriteRenderer> ().sprite = open;
-			Drop ();
-			snd.Play ();
-			dropped = true;
+			Open ();
 		}
+	}
+
+	void Open(){
+		this.gameObject.GetComponent<SpriteRenderer> ().sprite = open;
+		Drop ();
+		snd.Play ();
+		dropped = true;
+		Instantiate (dust, transform.position, Quaternion.identity);
+	}
+
+	void Damage(int amount){
+		Open ();
 	}
 
 	public void Drop(){

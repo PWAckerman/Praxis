@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEditor;
+ 
 using System.Collections;
 using System.Timers;
 using System.Linq;
@@ -7,42 +7,29 @@ using System.Linq;
 public class Projectil1 : MonoBehaviour, IProjectile{
 
 	public Rigidbody2D rb;
-	CircleCollider2D collider;
 	ConstantForce2D force;
-	SpriteRenderer renderer;
 	GameObject parent;
-	Transform transform;
+	AudioManager am;
+	Animator myAnim;
+	SpriteRenderer rd;
 	public bool collided;
+	public int angleIncrement;
 	int aim;
 	float projectileSpeed = 40;
 	public float timeToLive;
-	public Sprite[] sprites;
 	public Sprite projectile;
 
 	// Use this for initialization
 
 	public void Start(){
-		timeToLive = 3f;
-		sprites = AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/Projectiles/Projectile1.png").OfType<Sprite>().ToArray();
-		this.gameObject.layer = 8;
-		this.gameObject.tag = "Projectile1";
-		renderer = GetComponent<SpriteRenderer> () as SpriteRenderer;
-		rb = GetComponent<Rigidbody2D> () as Rigidbody2D;
-		collider = GetComponent<CircleCollider2D> () as CircleCollider2D;
-		transform = GetComponent<Transform> ();
+		myAnim = GetComponent<Animator> ();
+		angleIncrement = 45;
 		force = GetComponent<ConstantForce2D> ();
-		collider.radius = projectile.bounds.size.x / 2;
-		parent = GameObject.FindGameObjectWithTag ("Player");
-		bool direction = parent.GetComponent<SpriteRenderer> ().flipX;
-		transform.parent = parent.transform;
-		transform.position = new Vector3(parent.transform.position.x + (direction ? -2 : 2), parent.transform.position.y + 1,  parent.transform.position.z);
-		renderer.sprite = projectile;
-		int level = 1;
-		aim= parent.GetComponent<PlayerController>().aimingDirection;
-		Vector3 f = Quaternion.AngleAxis(0  + (20 * (direction ? -aim : aim)), Vector3.forward) * (direction ? Vector2.left : Vector2.right);
-		rb.AddForce (f * projectileSpeed, ForceMode2D.Impulse);
-		force.relativeForce = f * projectileSpeed;
-		UnityEngine.Object.Destroy(this.gameObject, timeToLive);
+		am = GameObject.FindGameObjectWithTag ("AudioManager").GetComponent<AudioManager> ();
+		timeToLive = 3f;
+		this.gameObject.layer = 8;
+		rb = GetComponent<Rigidbody2D> () as Rigidbody2D;
+		am.Play ("shoot1");
 	}
 
 	public void Update(){
@@ -58,28 +45,47 @@ public class Projectil1 : MonoBehaviour, IProjectile{
 //		}
 	}
 
-	public void Fire(bool direction, int level, int angle){
-		Debug.Log (angle);
-		Vector3 f = Quaternion.AngleAxis(0  + (20 * (direction ? angle : -angle )), Vector3.forward) * (direction ? Vector2.right : Vector2.left);
-		if (direction) {
-			transform.position = new Vector3 (parent.transform.position.x + 2, parent.transform.position.y + 1, parent.transform.position.z);
-		} else {
-			transform.position = new Vector3(parent.transform.position.x - 2, parent.transform.position.y + 1,  parent.transform.position.z);
-		}
+	public void Fire(bool direction, int aim, int angle){
+		//		transform.position = new Vector3(parent.transform.position.x + (direction ? -2 : 2), parent.transform.position.y + 1,  parent.transform.position.z);
+		rd = GetComponent<SpriteRenderer>();
+		rd.sprite = projectile;
+		Debug.Log ("AIM");
+		Debug.Log (aim);
+		Debug.Log ((angleIncrement * (direction ? aim : -aim)));
+		Vector3 f = Quaternion.AngleAxis(angle, Vector3.forward) * Vector2.right;
 		rb.AddForce (f * projectileSpeed, ForceMode2D.Impulse);
 		force.relativeForce = f * projectileSpeed;
-		UnityEngine.Object.Destroy(this, timeToLive);
+		myAnim = GetComponent<Animator> ();
+		Destroy(this.gameObject, timeToLive);
 	}
 
 	public void OnCollisionEnter2D(Collision2D collision){
 		Debug.Log ("COLLISION");
-		if (collision.gameObject.tag == "Drone") {
+		if (collision.gameObject.tag == "Drone" && gameObject.tag == "PlayerProjectile") {
 			collision.gameObject.GetComponent<DroneController> ().Damage (1);
+		} else if (collision.gameObject.name == "ReconDrone") {
+			collision.gameObject.SendMessage ("Damage", 1);
+		} else if (collision.gameObject.layer == 15 && gameObject.tag == "PlayerProjectile") {
+			collision.gameObject.SendMessage ("Damage", 1);
 		}
-		Destroy (this.gameObject);
+		if (collision.gameObject.tag == "Grenade") {
+			collision.gameObject.GetComponent<Grenade>().Die ();
+		}
+		myAnim.SetBool ("exploding", true);
+		rb.isKinematic = true;
+		rb.velocity = new Vector2 (0, 0);
+//		Destroy (this.gameObject);
 	}
 
-	public void OnCollisionEnter(){
-		
+	public void Die(){
+		gameObject.AddComponent<PointEffector2D> ();
+		PointEffector2D pe = gameObject.GetComponent<PointEffector2D> ();
+		GetComponent<CircleCollider2D> ().usedByEffector = true;
+		pe.forceMagnitude = 100f;
+		pe.forceVariation = 50f;
+		pe.forceSource = EffectorSelection2D.Collider;
+		pe.distanceScale = 1;
+		Destroy (this.gameObject, 0.1f);
 	}
+		
 }

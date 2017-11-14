@@ -18,14 +18,20 @@ public class DamagePlayer : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll){
 		Debug.Log ("LAVA COLLISION");
 		if (coll.gameObject.tag == "Player") {
-			coll.gameObject.GetComponent<PlayerController> ().Damage ();
+			coll.gameObject.SendMessage ("Damage", 1);
+		}
+		if (coll.gameObject.tag == "Grenade") {
+			Destroy (coll.gameObject);
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
 		Debug.Log ("LAVA TRIGGER");
 		if (other.gameObject.tag == "Player") {
-			other.gameObject.GetComponent<PlayerController> ().Damage ();
+			other.gameObject.SendMessage ("Damage", 1);
+		}
+		if (other.gameObject.tag == "Grenade") {
+			Destroy (other.gameObject);
 		}
 	}
 }
