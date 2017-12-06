@@ -27,6 +27,7 @@ public class AudioManager : MonoBehaviour {
 	public AudioClip doorOpen;
 	public AudioClip doorClose;
 	public AudioClip elevatorMove;
+	public AudioClip newItem;
 	AudioSource src;
 	public Dictionary<string, AudioClip> clips;
 
@@ -34,6 +35,7 @@ public class AudioManager : MonoBehaviour {
 	void Start () {
 		clips = new Dictionary<string, AudioClip> () {
 			{ "damage", damage },
+			{ "newItem", newItem},
 			{ "shoot1", shoot1 },
 			{ "droneShoot", droneShoot },
 			{"droneHovering", droneHovering},

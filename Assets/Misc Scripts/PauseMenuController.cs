@@ -47,19 +47,21 @@ public class PauseMenuController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		bool pause = Input.GetKeyDown(KeyCode.Joystick1Button8) || Input.GetKeyDown (KeyCode.Joystick1Button9) || Input.GetKey(KeyCode.Delete);
+		bool pause = Input.GetKeyDown(KeyCode.Joystick1Button9) || Input.GetKeyDown (KeyCode.Joystick1Button9) || Input.GetKeyDown(KeyCode.Delete);
 		if (pause && gm.isPaused()) {
 			if (Time.unscaledTime > nextPause) {
+				Debug.Log ("UNPAUSE");
 				gm.setCurrentMode (GameModeManager.Mode.RUNNING);
-				music.UnPause ();
+//				music.UnPause ();
 				HideMenus ();
 				Time.timeScale = 1;
 				nextPause = Time.unscaledTime + pauseRate;
 			}
 		} else if (!gm.isPaused() && pause) {
+			Debug.Log ("PAUSE!");
 			if (Time.unscaledTime > nextPause) {
 				gm.setCurrentMode (GameModeManager.Mode.PAUSED);
-				music.Pause ();
+//				music.Pause ();
 				ShowSelectedMenu ();
 				Time.timeScale = 0;
 				nextPause = Time.unscaledTime + pauseRate;

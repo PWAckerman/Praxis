@@ -13,7 +13,11 @@ public class BoundaryManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+		if (GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController> ().currentMode == PlayerMode.DRIVING) {
+			player = GameObject.FindGameObjectWithTag ("PlayerDriving").GetComponent<Transform> ();
+		} else {
+			player = GameObject.FindGameObjectWithTag ("Player").GetComponent<Transform> ();
+		}
 		ManageBoundary ();
 	}
 

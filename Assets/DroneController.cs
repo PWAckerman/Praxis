@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
  
 
-public class DroneController : MonoBehaviour, IDamageable {
+public class DroneController : MonoBehaviour, IDamageable, IFuzzable {
 
-	enum Mode{
+	public enum Mode{
 		PATROLLING,
 		PURSUING,
 		FIRING,
@@ -19,7 +19,7 @@ public class DroneController : MonoBehaviour, IDamageable {
 	AudioManager am;
 	ProjectileManager projManager;
 	Vector3 initialPosition;
-	Mode currentMode;
+	public Mode currentMode;
 	public float patrolDistance;
 	ProjectileOriginator po;
 	public Loot[] loot;
@@ -34,6 +34,7 @@ public class DroneController : MonoBehaviour, IDamageable {
 	public bool onTheWay;
 	bool activated;
 	bool dying;
+	bool fuzzed;
 	public GameObject explosion;
 	public GameObject exclamation;
 	public GameObject question;
@@ -72,7 +73,13 @@ public class DroneController : MonoBehaviour, IDamageable {
 	}
 
 	public void Fuzz(){
-		rb.gravityScale = 3;
+		if (!fuzzed) {
+			rb.gravityScale = 3;
+		}
+	}
+
+	public bool isFuzzed(){
+		return fuzzed;
 	}
 
 	public void Pursue(){
@@ -120,7 +127,9 @@ public class DroneController : MonoBehaviour, IDamageable {
 	}
 
 	void MoveTowards(float speed = 0.2f){
-		transform.position = Vector3.MoveTowards(transform.position, target, speed);
+		if (Time.timeScale > 0f) {
+			transform.position = Vector3.MoveTowards (transform.position, target, speed);
+		}
 //		rb.MovePosition(target.position);
 	}
 
@@ -150,6 +159,7 @@ public class DroneController : MonoBehaviour, IDamageable {
 	}
 
 	void ResumePatrol(){
+		fuzzed = false;
 		currentMode = Mode.PATROLLING;
 	}
 
@@ -255,6 +265,7 @@ public class DroneController : MonoBehaviour, IDamageable {
 			am.LoopWithLocalAudioSource (GetComponent<AudioSource> (), "droneHovering");
 		}
 		if (other.gameObject.tag == "ChaffExplosion") {
+			fuzzed = true;
 			currentMode = Mode.FUZZED;
 		}
 	}

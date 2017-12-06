@@ -4,7 +4,7 @@ using System.Collections;
 using System.Timers;
 using System.Linq;
 
-public class Grenade: MonoBehaviour, IProjectile{
+public class Grenade: MonoBehaviour, IProjectile, IExplodeable, IBurnable{
 
 	public Rigidbody2D rb;
 	ConstantForce2D force;
@@ -12,6 +12,7 @@ public class Grenade: MonoBehaviour, IProjectile{
 	AudioManager am;
 	Animator myAnim;
 	SpriteRenderer rd;
+	bool burning;
 	public bool collided;
 	public GameObject explosion;
 	public GameObject dust;
@@ -32,6 +33,7 @@ public class Grenade: MonoBehaviour, IProjectile{
 		this.gameObject.layer = 8;
 		rb = GetComponent<Rigidbody2D> () as Rigidbody2D;
 		am.Play ("shoot1");
+		burning = false;
 	}
 
 	public void Update(){
@@ -45,6 +47,21 @@ public class Grenade: MonoBehaviour, IProjectile{
 		//		if (wall || floor || platform) {
 		//			Destroy(this.gameObject);
 		//		}
+	}
+
+	public void Burn(){
+		burning = true;
+		Explode ();
+	}
+
+	public bool isBurning(){
+		return burning;
+	}
+
+	public void Explode(){
+		if (this.gameObject != null) {
+			Destroy (this.gameObject);
+		}
 	}
 
 	public void Fire(bool direction, int aim, int angle){

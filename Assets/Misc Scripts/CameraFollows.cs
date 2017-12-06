@@ -31,6 +31,10 @@ public class CameraFollows : MonoBehaviour {
 			target = secondaryTarget;
 			FollowPlayer ();
 		}
+		if(player.GetComponent<PlayerController>().currentMode == PlayerMode.DRIVING){
+			target = GameObject.FindGameObjectWithTag ("PlayerDriving").transform;
+			FollowPlayer ();
+		}
 		if(player.GetComponent<PlayerController>().currentMode == PlayerMode.LOCKER){
 			target = player.GetComponent<PlayerController>().locker;
 			FollowPlayer ();
@@ -93,7 +97,7 @@ public class CameraFollows : MonoBehaviour {
 			Debug.Log (xMin);
 			Debug.Log (yMin);
 			if (transform.position.x > xMin && transform.position.x < xMax && transform.position.y > yMin && transform.position.y < yMax) {
-				Time.timeScale = 1f;
+//				Time.timeScale = 1f;
 			}
 			Vector3 targetPosition = new Vector3 (Mathf.Clamp (target.position.x, boundary.bounds.min.x + (cameraBox.size.x / 2), boundary.bounds.max.x + (cameraBox.size.x / -2)),
 				Mathf.Clamp (target.position.y, boundary.bounds.min.y + (cameraBox.size.y / 2), boundary.bounds.max.y + (cameraBox.size.y / -2)),

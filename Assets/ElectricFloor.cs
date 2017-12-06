@@ -30,11 +30,9 @@ public class ElectricFloor : MonoBehaviour, IElectrifiable {
 
 	void OnTriggerStay2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Electrify (this.electricitySource);
 		}
 		if (coll.gameObject.GetComponent<IElectrocutable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrocutable> ().Electrocute ();
 		}
 
@@ -42,7 +40,6 @@ public class ElectricFloor : MonoBehaviour, IElectrifiable {
 
 	void OnTriggerExit2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Deelectrify ();
 		}
 	}

@@ -8,6 +8,7 @@ public class GrenadeExplosion : MonoBehaviour {
 	public float finalRadius;
 	public float increaseSpeed;
 	public CircleCollider2D collider;
+	public bool ignorePlayer;
 	public float rad;
 
 	void Start () {
@@ -30,6 +31,10 @@ public class GrenadeExplosion : MonoBehaviour {
 			}
 			// Update the collider with the new size
 			collider.radius = rad;
+		}
+		if (ignorePlayer) {
+			Physics2D.IgnoreCollision (GameObject.FindGameObjectWithTag ("Player").GetComponent<BoxCollider2D> (), GetComponent<Collider2D> ());
+			Physics2D.IgnoreCollision (GameObject.FindGameObjectWithTag ("Player").GetComponent<CircleCollider2D> (), GetComponent<Collider2D> ());
 		}
 	}
 

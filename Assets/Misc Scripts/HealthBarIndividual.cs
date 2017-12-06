@@ -24,7 +24,7 @@ public class HealthBarIndividual {
 		onSprite = onTex;
 		renderer = go.AddComponent<SpriteRenderer> () as SpriteRenderer;
 		transform = go.GetComponent<Transform> ();
-		renderer.sortingOrder = 30;
+		renderer.sortingOrder = 300;
 		RenderState (initialState);
 	}
 

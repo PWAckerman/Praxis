@@ -4,6 +4,7 @@ using System.Collections;
 public class ProjectileManager {
 	public enum Mode {
 		PROJECTILE1,
+		TRANQUILIZER,
 		ENEMY,
 		GRENADE,
 		CHAFF_GRENADE

@@ -45,7 +45,9 @@ public class Safe : MonoBehaviour, ILootable {
 	}
 
 	public void Drop(){
-		gold = GoldFactory.GetAssortedGold (dropRate, this, new GameObject());
+		if (!dropped) {
+			gold = GoldFactory.GetAssortedGold (dropRate, this, new GameObject ());
+		}
 	}
 
 }

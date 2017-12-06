@@ -142,11 +142,11 @@ public class InfoMenuController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-			if (Input.GetKeyDown (KeyCode.Joystick1Button4) && pm.currentMenu == PauseMenuManager.Menu.INFO) {
+			if (gm.isPaused() && Input.GetKeyDown (KeyCode.Joystick1Button13) && pm.currentMenu == PauseMenuManager.Menu.INFO) {
 				Debug.Log ("We're skipping INFO for some reason");
 				pm.getPrevState ();
 			}
-			if (Input.GetKeyDown (KeyCode.Joystick1Button5) && pm.currentMenu == PauseMenuManager.Menu.INFO) {
+			if (gm.isPaused() && Input.GetKeyDown (KeyCode.Joystick1Button14) && pm.currentMenu == PauseMenuManager.Menu.INFO) {
 				Debug.Log ("We're skipping INFO for some reason");
 				pm.getNextState ();
 			}
@@ -186,7 +186,7 @@ public class InfoMenuController : MonoBehaviour {
 
 	void ProcessAction(){
 		if (gm.isPaused () && im.currentPanel == InfoMenuManager.Panel.NONE) {
-			if(Input.GetKeyDown(KeyCode.Joystick1Button1)){
+			if(Input.GetKeyDown(KeyCode.Joystick1Button17)){
 				switch (currentPanel.tag) {
 				case "RawPanel":
 					im.setCurrentMode (InfoMenuManager.Panel.RAW);

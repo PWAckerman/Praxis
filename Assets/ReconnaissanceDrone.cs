@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReconnaissanceDrone : MonoBehaviour {
+public class ReconnaissanceDrone : MonoBehaviour, IBurnable {
 	public int maxSpeed;
 	public PlayerController player;
 	public Rigidbody2D myRB;
 	public AudioManager am;
+	public bool burning;
 	// Use this for initialization
 	void Start () {
 		maxSpeed = 10;
@@ -48,6 +49,14 @@ public class ReconnaissanceDrone : MonoBehaviour {
 			GetComponent<Animator> ().SetBool ("dying", true);
 			am.Play ("droneDisappear");
 		}
+	}
+
+	public void Burn(){
+		Damage (1);
+	}
+
+	public bool isBurning(){
+		return burning;
 	}
 
 	void DestroyMe(){

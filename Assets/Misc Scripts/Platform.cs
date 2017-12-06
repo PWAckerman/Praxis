@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour {
+public class Platform : MonoBehaviour, ISwitchable {
 
 	// Use this for initialization
 	public enum Direction{
 		HORIZONTAL,
 		VERTICAL
 	}
-
+		
 
 	public float distance;
 	public float speed;
-	public Direction direction; 
+	public Direction direction;
+	public bool on{ get; set;}
+	public bool initialState;
+	public SwitchableState state;
 
 	Rigidbody2D rb;
 	Transform transform;
@@ -25,6 +28,7 @@ public class Platform : MonoBehaviour {
 		transform = GetComponent<Transform> ();
 		rb = GetComponent<Rigidbody2D>();
 		startingPosition = transform.position;
+		on = initialState;
 		switch(direction){
 			case Direction.HORIZONTAL:
 				destination = new Vector3 (transform.position.x + distance, transform.position.y, transform.position.z);
@@ -38,21 +42,35 @@ public class Platform : MonoBehaviour {
 				return;
 		}
 	}
+
+	public void TurnOff(){
+		on = false;
+	}
+
+	public void TurnOn (){
+		on = true;
+	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (transform.position == startingPosition) {
 			destination = endingPosition;
-			transform.position = Vector3.Lerp (startingPosition, destination, Time.deltaTime * speed);
+			if (on) {
+				transform.position = Vector3.MoveTowards (startingPosition, destination, Time.deltaTime * speed);
+			}
 		} else if (transform.position == endingPosition) {
 			destination = startingPosition;
-			transform.position = Vector3.Lerp (endingPosition, destination, Time.deltaTime * speed);
+			if (on) {
+				transform.position = Vector3.MoveTowards (endingPosition, destination, Time.deltaTime * speed);
+			}
 		} else {
-			transform.position = Vector3.Lerp (transform.position, destination, Time.deltaTime * speed);
+			if (on) {
+				transform.position = Vector3.MoveTowards (transform.position, destination, Time.deltaTime * speed);
+			}
 		}
 	}
 
 	void FixedUpdate() {
-		rb.MovePosition(transform.position + transform.forward * Time.deltaTime);
+//		rb.MovePosition(transform.position + transform.forward * Time.deltaTime);
 	}
 }

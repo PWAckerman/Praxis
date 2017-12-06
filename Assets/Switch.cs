@@ -17,16 +17,16 @@ public class Switch : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerIsPresent && switchable.GetComponent<ISwitchable>().on == true && Input.GetKeyDown(KeyCode.Joystick1Button1)) {
+		if (playerIsPresent && switchable.GetComponent<ISwitchable>().on == true && Input.GetKeyDown(KeyCode.Joystick1Button17)) {
 			switchable.GetComponent<ISwitchable>().TurnOff ();
 			GetComponent<SpriteRenderer> ().sprite = offSprite;
-		} else if (playerIsPresent && switchable.GetComponent<ISwitchable>().on == false && Input.GetKeyDown(KeyCode.Joystick1Button1)) {
+		} else if (playerIsPresent && switchable.GetComponent<ISwitchable>().on == false && Input.GetKeyDown(KeyCode.Joystick1Button17)) {
 			switchable.GetComponent<ISwitchable>().TurnOn ();
 			GetComponent<SpriteRenderer> ().sprite = onSprite;
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D coll){
+	void OnTriggerStay2D(Collider2D coll){
 		if (coll.gameObject.tag == "Player") {
 			playerIsPresent = true;
 		}

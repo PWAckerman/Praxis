@@ -19,7 +19,7 @@ public class BombableWall : MonoBehaviour {
 		}
 		if (coll.collider.gameObject.layer == 11) {
 			Debug.Log ("it was a bomb");
-			Destroy (coll.collider.gameObject);
+			coll.collider.gameObject.GetComponent<IExplodeable> ().Explode ();
 			Destroy (this.gameObject);
 		}
 

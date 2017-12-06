@@ -62,15 +62,24 @@ public class Projectil1 : MonoBehaviour, IProjectile{
 	public void OnCollisionEnter2D(Collision2D collision){
 		Debug.Log ("COLLISION");
 		if (collision.gameObject.tag == "Drone" && gameObject.tag == "PlayerProjectile") {
-			collision.gameObject.GetComponent<DroneController> ().Damage (1);
+			collision.gameObject.GetComponent<IDamageable> ().Damage (1);
+			Destroy (this.gameObject);
 		} else if (collision.gameObject.name == "ReconDrone") {
-			collision.gameObject.SendMessage ("Damage", 1);
+//			collision.gameObject.SendMessage ("Damage", 1);
+			collision.gameObject.GetComponent<IDamageable> ().Damage (1);
+			Destroy (this.gameObject);
 		} else if (collision.gameObject.layer == 15 && gameObject.tag == "PlayerProjectile") {
-			collision.gameObject.SendMessage ("Damage", 1);
+			collision.gameObject.GetComponent<IDamageable> ().Damage (1);
+			Destroy (this.gameObject);
+		} else if (collision.gameObject.tag == "ElectricPole" && gameObject.tag == "PlayerProjectile") {
+			collision.gameObject.GetComponent<IDamageable> ().Damage (1);
+			Destroy (this.gameObject);
 		}
 		if (collision.gameObject.tag == "Grenade") {
 			collision.gameObject.GetComponent<Grenade>().Die ();
+			Destroy (this.gameObject);
 		}
+		Debug.Log (collision.gameObject.name);
 		myAnim.SetBool ("exploding", true);
 		rb.isKinematic = true;
 		rb.velocity = new Vector2 (0, 0);

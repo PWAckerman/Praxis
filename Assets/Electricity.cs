@@ -9,8 +9,9 @@ public class Electricity : MonoBehaviour, ISwitchable {
 	public bool on { get; set;}
 	// Use this for initialization
 	void Start () {
-		on = true;
+		on = false;
 		electrified = new HashSet<GameObject> ();
+		gameObject.SetActive (false);
 	}
 	
 	// Update is called once per frame

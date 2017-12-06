@@ -25,16 +25,16 @@ public class Locker : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && playerIsPresent && !playerIsInside && !isOpen) {
+		if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button17)) && playerIsPresent && !playerIsInside && !isOpen) {
 			Open ();
-		} else if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && playerIsPresent && !playerIsInside && isOpen) {
+		} else if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button17)) && playerIsPresent && !playerIsInside && isOpen) {
 			player.GetComponent<PlayerController>().currentMode = PlayerMode.LOCKER;
 			player.GetComponent<PlayerController> ().locker = this.transform;
 			player.transform.localScale = new Vector3 (0f, 0f, 0f);
 			playerIsInside = true;
 			currentPointer = Instantiate (pointer, new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z), Quaternion.identity);
 			Close ();
-		} else if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && playerIsInside && !isOpen) {
+		} else if ((Input.GetKeyDown (KeyCode.K) || Input.GetKeyDown(KeyCode.Joystick1Button17)) && playerIsInside && !isOpen) {
 			player.GetComponent<PlayerController>().currentMode = PlayerMode.PLAYER;
 			player.GetComponent<PlayerController> ().locker = null;
 			player.transform.localScale = new Vector3 (8f, 8f, 8f);
@@ -57,7 +57,7 @@ public class Locker : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().sprite = closedSprite;
 	}
 
-	void OnTriggerEnter2D(Collider2D coll){
+	void OnTriggerStay2D(Collider2D coll){
 		if (coll.tag == "Player") {
 			playerIsPresent = true;
 		}
@@ -66,7 +66,9 @@ public class Locker : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D coll){
 		if (coll.tag == "Player") {
 			playerIsPresent = false;
-			Close ();
+			if (isOpen) {
+				Close ();
+			}
 		}
 	}
 }

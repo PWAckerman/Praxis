@@ -50,12 +50,13 @@ public class Gold : MonoBehaviour {
 		renderer.sprite = sprite;
 		renderer.sortingOrder = 6;
 		enabled = true;
+		gameObject.layer = 17;
 	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
 		colliders = Physics2D.OverlapCircle (transform.position, radius);
-		if (Input.GetKey (KeyCode.Joystick1Button14) && colliders.gameObject.layer == 9) {
+		if (Input.GetKey (KeyCode.Joystick1Button13) || Input.GetKey(KeyCode.F)) {
 			Collect ();
 		}
 	}

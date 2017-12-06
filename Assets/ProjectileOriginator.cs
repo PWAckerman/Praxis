@@ -9,8 +9,10 @@ public class ProjectileOriginator : MonoBehaviour {
 	public Transform transform;
 	public Vector3 initialPosition;
 	public GameObject prefab;
+	InventoryManager im;
 	void Start () {
 		initialPosition = transform.localPosition;
+		im = InventoryManager.GetInstance ();
 	}
 	
 	// Update is called once per frame
@@ -31,25 +33,16 @@ public class ProjectileOriginator : MonoBehaviour {
 			transform.localPosition = lowered ? new Vector3(initialPosition.x, initialPosition.y - 0.05f, initialPosition.z) : initialPosition;
 			break;
 		case 1:
-			transform.localPosition = lowered ? new Vector3(initialPosition.x, initialPosition.y - 0.05f, initialPosition.z) : initialPosition;
+			transform.localPosition = lowered ? new Vector3(initialPosition.x, initialPosition.y - 0.05f, initialPosition.z) : new Vector3(initialPosition.x, initialPosition.y + 0.15f, initialPosition.z);
 			break;
 		case 2:
-			transform.localPosition = lowered ? new Vector3(0f, 0.28f - 0.05f, initialPosition.z) : new Vector3 (0f, 0.28f, initialPosition.z);
+			transform.localPosition = lowered ? new Vector3(0f, 0.28f - 0.05f, initialPosition.z) : new Vector3 (0f, 0.4f, initialPosition.z);
 			break;
-		case 3:
-			transform.localPosition = lowered ? new Vector3 (-initialPosition.x, initialPosition.y - 0.05f, transform.localPosition.z) : new Vector3 (-initialPosition.x, initialPosition.y, transform.localPosition.z);
-			break;
-		case 4:
-			transform.localPosition = lowered ? new Vector3 (-initialPosition.x, initialPosition.y - 0.05f, transform.localPosition.z) : new Vector3 (-initialPosition.x, initialPosition.y, transform.localPosition.z);
-			break;
-		case 5:
-			transform.localPosition = lowered? new Vector3 (-initialPosition.x, initialPosition.y - 0.05f, transform.localPosition.z) : new Vector3 (-initialPosition.x, initialPosition.y, transform.localPosition.z);
+		case -1:
+			transform.localPosition = lowered ? new Vector3(initialPosition.x - 0.05f, initialPosition.y - 0.25f, initialPosition.z) : new Vector3(initialPosition.x, initialPosition.y - 0.4f, initialPosition.z);
 			break;
 		case -2:
-			transform.localPosition = lowered ? new Vector3(0f, -0.28f, initialPosition.z) : new Vector3 (0f, -0.28f, initialPosition.z);
-			break;
-		case 7:
-			transform.localPosition = lowered ? new Vector3(initialPosition.x, initialPosition.y - 0.05f, initialPosition.z) : initialPosition;
+			transform.localPosition = lowered ? new Vector3(0f, -0.2f, initialPosition.z)  : initialPosition;
 			break;
 		}
 	}
@@ -68,7 +61,7 @@ public class ProjectileOriginator : MonoBehaviour {
 
 
 	public void Flip(){
-		transform.localPosition = new Vector3(-transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+		transform.localPosition = new Vector3(-Mathf.Abs(transform.localPosition.x), transform.localPosition.y, transform.localPosition.z);
 	}
 
 	public void Lower(){

@@ -9,7 +9,7 @@ public class Ladder : MonoBehaviour {
 	public BoxCollider2D platformCollider;
 
 	void Start () {
-		platformCollider = GetComponents<BoxCollider2D> () [1];
+//		platformCollider = GetComponents<BoxCollider2D> () [1];
 	}
 	
 	// Update is called once per frame

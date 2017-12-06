@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MetalBox : MonoBehaviour, IAttractable, IElectrifiable{
+public class MetalBox : MonoBehaviour, IAttractable, IElectrifiable, IPickupable{
 
 	// Use this for initialization
 
@@ -28,6 +28,22 @@ public class MetalBox : MonoBehaviour, IAttractable, IElectrifiable{
 		}
 	}
 
+	public void Pickup(GameObject picker){
+		picker.SendMessage ("Pickup", this.gameObject);
+	}
+
+	public GameObject GetGameObject(){
+		return gameObject;
+	}
+
+	public void Throw (bool direction, float force){
+		Debug.Log ("THROW");
+		transform.parent = null;
+		rb.bodyType = RigidbodyType2D.Dynamic;
+		rb.constraints = RigidbodyConstraints2D.None;
+		rb.velocity = new Vector2 ( direction ? force : -force, force);
+	}
+
 	public void Electrify(GameObject src){
 		src.GetComponent<Electricity> ().AddElectrified (this.gameObject);
 		electrified = true;
@@ -47,18 +63,15 @@ public class MetalBox : MonoBehaviour, IAttractable, IElectrifiable{
 
 	void OnTriggerStay2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Electrify (this.electricitySource);
 		}
 		if (coll.gameObject.GetComponent<IElectrocutable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrocutable> ().Electrocute ();
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Deelectrify ();
 		}
 	}

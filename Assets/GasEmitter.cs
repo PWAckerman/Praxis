@@ -8,12 +8,17 @@ public class GasEmitter : MonoBehaviour, ISwitchable {
 	public GameObject gas;
 	public int emissionLimit;
 	public float emissionSpeed;
+	public bool publicOn;
 	public bool on {get; set;}
 	Coroutine emission;
 
 	void Start () {
-		on = true;
-		emission = StartCoroutine ("EmitGas");
+		if (publicOn) {
+			on = true;
+			TurnOn ();
+		} else {
+			on = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -24,11 +29,14 @@ public class GasEmitter : MonoBehaviour, ISwitchable {
 	public void TurnOff(){
 		on = false;
 		StopCoroutine (emission);
+		emission = null;
 	}
 
 	public void TurnOn(){
 		on = true;
-		emission = StartCoroutine ("EmitGas");
+		if (emission == null) {
+			emission = StartCoroutine ("EmitGas");
+		}
 	}
 
 	IEnumerator EmitGas(){

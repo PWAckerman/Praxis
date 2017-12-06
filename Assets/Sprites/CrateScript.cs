@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Timers;
 
-public class CrateScript : MonoBehaviour, ILootable, IBurnable {
+public class CrateScript : MonoBehaviour, ILootable, IBurnable, IAttachable {
 	public Loot[] loot;
 	public int dropRate;
 	public GameObject dust;
@@ -31,7 +31,8 @@ public class CrateScript : MonoBehaviour, ILootable, IBurnable {
 
 	public void Burn(){
 		burning = true;
-		Instantiate (bigFire, transform.position, Quaternion.identity);
+		GameObject fire = Instantiate (bigFire, transform.position, Quaternion.identity);
+		fire.transform.SetParent (this.transform);
 		Destroy (this.gameObject, 3f);
 	}
 
@@ -47,4 +48,11 @@ public class CrateScript : MonoBehaviour, ILootable, IBurnable {
 		loot = LootFactory.GetAssortedRandomLoot (Random.Range(dropRate - 5, dropRate), this, new GameObject());
 	}
 
+	public void Attach(GameObject go, Vector2 point){
+		if (GetComponent<HingeJoint2D> () == null) {
+			this.gameObject.AddComponent<HingeJoint2D> ();
+			GetComponent<HingeJoint2D> ().connectedBody = go.GetComponent<Rigidbody2D> ();
+			GetComponent<HingeJoint2D> ().connectedAnchor = transform.InverseTransformPoint(point);
+		}
+	}
 }

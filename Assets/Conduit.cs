@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Conduit : MonoBehaviour, IElectrifiable {
 
+	[SerializeField]
 	bool electrified;
 	GameObject electricitySource;
 	Animator myAnim;
-	// Use this for initialization
+
 	void Start () {
 		myAnim = GetComponent<Animator> ();
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (electricitySource == null) {
 			Deelectrify ();
@@ -30,14 +30,12 @@ public class Conduit : MonoBehaviour, IElectrifiable {
 
 	void OnTriggerStay2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Electrify (this.electricitySource);
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D coll){
 		if (coll.gameObject.GetComponent<IElectrifiable>() != null && electrified) {
-			Debug.Log ("electrify");
 			coll.gameObject.GetComponent<IElectrifiable> ().Deelectrify ();
 		}
 	}

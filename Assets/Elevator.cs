@@ -34,9 +34,9 @@ public class Elevator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (playerIsPresent && Input.GetKeyDown(KeyCode.Joystick1Button1) && open) {
+		if (playerIsPresent && Input.GetKeyDown(KeyCode.Joystick1Button17) && open) {
 			open = false;
-		} else if (playerIsPresent && Input.GetKeyDown(KeyCode.Joystick1Button1) && !open) {
+		} else if (playerIsPresent && Input.GetKeyDown(KeyCode.Joystick1Button17) && !open) {
 			open = true;
 			transition = false;
 			playerIsInside = false;
